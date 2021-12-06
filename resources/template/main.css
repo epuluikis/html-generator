@@ -1,0 +1,87 @@
+html {
+    --primary: #f5ac72;
+    --secondary: #facfad;
+    --dark: #212529;
+}
+
+html.orange {
+    --primary: #FC6471;
+    --secondary: #7D5BA6;
+    --dark: #212529;
+}
+
+html.blue {
+    --primary: #1481BA;
+    --secondary: #0CAADC;
+    --dark: #001021;
+}
+
+html.red {
+    --primary: #FF5964;
+    --secondary: #FE9920;
+    --dark: #333745;
+}
+
+html.pastel {
+    --primary: #F2BAC9;
+    --secondary: #BAD7F2;
+    --dark: #333745;
+}
+
+h2 {
+    color: var(--primary);
+}
+
+a {
+    color: #212529;
+    text-decoration: unset;
+}
+
+.bg-primary.bg-gradient {
+    background: rgb(245,172,114) !important;
+    background: linear-gradient(135deg, var(--primary) 15%, var(--secondary) 100%) !important;
+}
+
+.bg-dark {
+    background-color: var(--dark) !important;
+}
+
+.bg-img {
+    position: relative;
+}
+
+.bg-landing::before {
+    right: 0;
+    bottom: 0;
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    content: '';
+    background: url("./img/landing.png");
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.border-primary {
+    border-color: var(--primary) !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.contact,
+.contact__icon {
+    transition: 0.15s;
+}
+
+.contact:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.contact:hover .contact__icon {
+    color: white !important;
+}
