@@ -5,3 +5,5 @@
 /bin
 /obj
 /.idea
+/output
+/.vscode
