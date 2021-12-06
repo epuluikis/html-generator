@@ -72,8 +72,8 @@ int create_output_directories()
 // Copy HTML dependencies using Windows API
 int copy_dependencies()
 {
-    int main_css = CopyFile("./resources/template/main.css", "./output/main.css", 0);
-    int landing_image = CopyFile("./resources/template/img/landing.png", "./output/img/landing.png", 0);
+    int main_css = CopyFile("./resources/template/app.css", "./output/app.css", 0);
+    int landing_image = CopyFile("./resources/template/img/decoration.png", "./output/img/decoration.png", 0);
 
     if (!main_css || !landing_image)
     {
@@ -92,7 +92,7 @@ void test_str_replace()
 
     create_output_directories();
 
-    test_file = fopen("./output/test_output.html", "w");
+    test_file = fopen("./output/index.html", "w");
 
     fprintf(test_file, "%s", test_template);
 
