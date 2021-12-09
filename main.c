@@ -103,7 +103,7 @@ void test_str_replace()
 
 int main()
 {
-    // test_str_replace();
+    test_str_replace();
 
     return 0;
 }
