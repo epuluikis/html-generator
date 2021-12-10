@@ -23,7 +23,6 @@ typedef struct contents {
     char hashes_to_change[FIELD_COUNT][STR_MAX_LENGTH];     /*!< Hashes to replace */
     char interface_text[FIELD_COUNT][STR_MAX_LENGTH];       /*!< Interface text */
     char section_titles[SECTION_COUNT][STR_MAX_LENGTH];     /*!< Section titles */
-    char user_input[FIELD_COUNT][STR_MAX_LENGTH];           /*!< User input */
     int section_ids[SECTION_COUNT][SECTION_MAX_SIZE];       /*!< Section - hash relation */
 } t_contents;
 
