@@ -28,12 +28,4 @@ typedef struct contents {
 
 int init_contents(t_contents* contents);
 
-char *section_pointers[] = {
-    landing_section,
-    image_section,
-    hero_section,
-    contact_section,
-    carousel_section
-};
-
 #endif /* CONTENTS_H_INCLUDED */

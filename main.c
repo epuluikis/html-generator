@@ -1,8 +1,6 @@
 #include "headers/template.h"
 #include "headers/contents.h"
-//#include "contents.c"
 #include "headers/helpers.h"
-//#include "helpers.c"
 #include <stdio.h>
 #include <string.h>
 
