@@ -11,6 +11,73 @@ void write_to_HTML(char* section)
     fprintf(output_file, "%s", section);
 }
 
+//This should be all in main and not a function.
+void user_interface(t_contents *contents){
+ system("clear");
+ console_text_color('b');
+ printf("===================================================\n"
+ "This program create personalised portfolio website.\n"
+ "===================================================\n"
+ "Please enter your full name: ");
+
+ char *name;
+ name=calloc(sizeof(char), STR_MAX_LENGTH);
+ if (name==NULL){
+     printf("Failed to allocate memory");
+     exit(0);
+ }
+
+ fgets(name, STR_MAX_LENGTH, stdin); //Todo validate
+
+ while(1)
+ {
+    system("clear");
+    printf("Choose what section to add next: \n");
+    int i = 0;
+    for(i;i<5;i++) // TODO Remove header option . Ask it before letting user choose.
+    {    
+        printf("[%d] to add %s \n", i, contents->section_titles[i]);
+    }
+    int choice;
+    choice=get_number(i-1);
+    system("clear");
+
+    for (int j=0 ;contents->section_ids[choice][j]!=-1;++j)
+    {
+        printf("Please enter %s \n", contents->interface_text[contents->section_ids[choice][j]]);
+
+        char *input;
+        input=calloc(sizeof(char), STR_MAX_LENGTH);
+        if (input==NULL)
+        {
+            printf("Failed to allocate memory");
+            exit(0);
+        }
+
+        fgets(input, STR_MAX_LENGTH, stdin);   //TODO will implement larger (w validation) input once i'll know where/how to send input
+        fflush(stdin);
+        printf("%s", input);
+        input = validation(input); //TODO improve, bad since overflow can happen 1 char is replaced with 4
+        //TODO sends input 
+        free(input);
+        system("clear");
+    }
+
+    printf("%s added. To continue enter: \n"
+    "[0] to quit \n"
+    "[1] to add another section \n", contents->section_titles[choice]);
+
+    if(get_number(1))
+    {
+        continue;
+    }
+
+    free(name);
+    console_text_color('w');
+    break;
+    }
+}
+
 void create_section(t_contents *contents, int section_number)
 {
     printf("\nworking with %s: \n", contents->section_titles[section_number]);
@@ -28,9 +95,13 @@ void create_section(t_contents *contents, int section_number)
 
 int main()
 {
+    
     t_contents contents;
 
     init_contents(&contents);
+
+    user_interface(&contents);
+    printf("The rest is not part of interface \n");
 	
 	output_file = fopen("index.html", "w");
 	
