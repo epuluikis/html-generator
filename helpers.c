@@ -12,11 +12,10 @@
  * \param[in]       with: Replace with string
  * \param[out]      result: Pointer to new string
  */
-char* str_replace(char* orig, char* rep, char* with)
-{
-    char* result;
-    char* ins;
-    char* tmp;
+char *str_replace(char *orig, char *rep, char *with) {
+    char *result;
+    char *ins;
+    char *tmp;
     int len_rep;
     int len_with;
     int len_front;
@@ -60,64 +59,60 @@ char* str_replace(char* orig, char* rep, char* with)
  * \brief           Change console color
  * \param[in]       color: Chosen color
  */
-void console_text_color(char color)
-{
-    switch(color)
-    {
-    case 'r':
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_RED ));
-        break;
-    case 'y':
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_GREEN | FOREGROUND_RED));
-        break;
-    case 'g':
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_GREEN));
-        break;
-    case 'b':
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_BLUE | FOREGROUND_GREEN));
-        break;
-    case 'f':
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (0));
-        break;
-    default:
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN));
+void console_text_color(char color) {
+    switch (color) {
+        case 'r':
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_RED));
+            break;
+        case 'y':
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_GREEN | FOREGROUND_RED));
+            break;
+        case 'g':
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_GREEN));
+            break;
+        case 'b':
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_BLUE | FOREGROUND_GREEN));
+            break;
+        case 'f':
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (0));
+            break;
+        default:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+                                    (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN));
     }
 }
 
 /**
  * \brief           Waits for user input, validates, asks again validation if failed
- * \param[in]       limit: Input number max value
+ * \param[in]       min: Input number min value
+ * \param[in]       max: Input number max value
  * \param[out]      number: Validated int input
  */
-int get_number(int limit)
-{
+int get_number(int min, int max) {
     int number;
 
-    while(1)
-    {
+    while (1) {
+        printf("Please input integer number [%d, %d]: ", min, max);
 
-        if(scanf("%d", &number) != 1 || getchar() != '\n')
-        {
-            console_text_color('r');
-            printf("Please enter number between 0 and %d:", limit);
-            console_text_color('b');
+        if (scanf("%d", &number) != 1 || getchar() != '\n') {
+            printf("Input does contain not number characters. ");
 
             char c = getchar();
 
-            while (c != '\n')
-            {
+            while (c != '\n') {
                 c = getchar();
             };
 
             continue;
         }
-        if(number<=limit&&number>=0)
-        {
-            return number;
+
+        if (number < -min || number > max) {
+            printf("Input value doesn't fit in range. ");
+
+            continue;
         }
-        console_text_color('r');
-        printf("Input validation error. Please enter number between 0 and %d:", limit);
-        console_text_color('b');
+
+        return (int) number;
     }
 }
 
@@ -126,20 +121,22 @@ int get_number(int limit)
  * \param[in]       input: Original string 
  * \param[out]      input: Adjusted string
  */
-char *validation(char* input){
-    //TODO move to contents.c ?
-    char *less_sign;
-    char *greater_sign;
-    char *less_sign_html;
-    char *greater_sign_html;
-
-    less_sign="<";
-    greater_sign=">";
-    less_sign_html="&#60";
-    greater_sign_html="&#62";
+char *sanitize_input(char *input) {
+    char less_sign[] = "<";
+    char greater_sign[] = ">";
+    char less_sign_html[] = "&#60";
+    char greater_sign_html[] = "&#62";
 
     input = str_replace(input, less_sign, less_sign_html);
     input = str_replace(input, greater_sign, greater_sign_html);
 
     return input;
- }
+}
+
+/**
+ * \brief           Clear terminal
+ * \note            This function doesn't have return value
+ */
+void clear_terminal() {
+    system("cls");
+}
