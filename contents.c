@@ -48,7 +48,7 @@ void init_structure(t_contents* contents)
 
     const char section_title_names[SECTION_COUNT][STR_MAX_LENGTH] = {
         "General Section",
-        "Text + Image",
+        "Text + Image Section",
         "Hero Section",
         "Contacts Section",
         "Carousel Section",
