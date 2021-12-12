@@ -38,17 +38,9 @@ void write_input_to_section(t_contents *contents, int section_number)
     {
         char *input = contents->user_input[section_number][contents->section_ids[section_number][j]];
 
-        if(!input)
-        {
-            printf("Failed to write input\n");
-            continue;
-        }
-
         strcpy(section_pointers[section_number], str_replace(section_pointers[section_number],
                                                              contents->hashes_to_change[contents->section_ids[section_number][j]],
                                                              input));
-                                                             
-        printf("Wrote %s into %s from id %d\n", input, contents->hashes_to_change[contents->section_ids[section_number][j]], contents->section_ids[section_number][j]);
     }
 }
 
