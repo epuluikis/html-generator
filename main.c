@@ -20,21 +20,31 @@ void user_interface(t_contents *contents){
  "===================================================\n"
  "Please enter your full name: ");
 
- char *name;
- name=calloc(sizeof(char), STR_MAX_LENGTH);
- if (name==NULL){
-     printf("Failed to allocate memory");
-     exit(0);
+ char name[STR_MAX_LENGTH];
+ 
+ while(1)
+ {
+    fgets(name, STR_MAX_LENGTH, stdin); 
+    if(strlen(name)+1==STR_MAX_LENGTH)
+    {
+    fflush(stdin);
+    console_text_color('r');
+    printf("Full name is too long, allowed full name lenght %d \n"
+    "Please enter your full name: ", STR_MAX_LENGTH-3);
+    console_text_color('b');
+    }
+    else
+    {
+        break;
+    }
  }
-
- fgets(name, STR_MAX_LENGTH, stdin); //Todo validate
 
  while(1)
  {
     system("clear");
     printf("Choose what section to add next: \n");
     int i = 0;
-    for(i;i<5;i++) // TODO Remove header option . Ask it before letting user choose.
+    for(i; i<5; i++) // TODO Remove header option . Ask it before letting user choose.
     {    
         printf("[%d] to add %s \n", i, contents->section_titles[i]);
     }
@@ -42,7 +52,7 @@ void user_interface(t_contents *contents){
     choice=get_number(i-1);
     system("clear");
 
-    for (int j=0 ;contents->section_ids[choice][j]!=-1;++j)
+    for (int j=0 ; contents->section_ids[choice][j]!=-1; ++j)
     {
         printf("Please enter %s \n", contents->interface_text[contents->section_ids[choice][j]]);
 
@@ -72,7 +82,6 @@ void user_interface(t_contents *contents){
         continue;
     }
 
-    free(name);
     console_text_color('w');
     break;
     }

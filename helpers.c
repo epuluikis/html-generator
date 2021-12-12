@@ -95,7 +95,7 @@ int get_number(int limit)
 
     while(1)
     {
-        ask_again:
+
         if(scanf("%d", &number) != 1 || getchar() != '\n')
         {
             console_text_color('r');
@@ -111,16 +111,13 @@ int get_number(int limit)
 
             continue;
         }
-        if(number>limit||number<0)
+        if(number<=limit&&number>=0)
         {
-            console_text_color('r');
-            printf("Input validation error. Please enter number between 0 and %d:", limit);
-            console_text_color('b');
-
-            goto ask_again;
+            return number;
         }
-
-        return number;
+        console_text_color('r');
+        printf("Input validation error. Please enter number between 0 and %d:", limit);
+        console_text_color('b');
     }
 }
 
