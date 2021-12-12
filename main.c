@@ -4,10 +4,52 @@
 #include <stdio.h>
 #include <string.h>
 
-FILE *output_file;
+void write_header(char *username, char *description)
+{
+	strcpy(header_section, str_replace(header_section, "{{user_name}}", username));
+    strcpy(header_section, str_replace(header_section, "{{description}}", description));
 
-void write_to_HTML(char *section) {
-    fprintf(output_file, "%s", section);
+    write_to_HTML(header_section);
+}
+
+void write_landing(char *username)
+{
+	strcpy(landing_section, str_replace(landing_section, "{{user_name}}", username));
+
+    write_to_HTML(landing_section);
+}
+
+void write_footer(char *username)
+{
+	strcpy(footer_section, str_replace(footer_section, "{{user_name}}", username));
+
+    char *currentyear;
+
+    // TODO: Get current year
+
+    strcpy(footer_section, str_replace(footer_section, "{{current_year}}", currentyear));
+
+    write_to_HTML(footer_section);
+}
+
+void write_input_to_section(t_contents *contents, int section_number)
+{
+    for (int j = 0; contents->section_ids[section_number][j] != -1; ++j)
+    {
+        char *input = contents->user_input[section_number][contents->section_ids[section_number][j]];
+
+        if(!input)
+        {
+            printf("Failed to write input\n");
+            continue;
+        }
+
+        strcpy(section_pointers[section_number], str_replace(section_pointers[section_number],
+                                                             contents->hashes_to_change[contents->section_ids[section_number][j]],
+                                                             input));
+                                                             
+        printf("Wrote %s into %s from id %d\n", input, contents->hashes_to_change[contents->section_ids[section_number][j]], contents->section_ids[section_number][j]);
+    }
 }
 
 /**
@@ -72,10 +114,8 @@ void user_interface(t_contents *contents) {
     printf("Please enter website description: ");
     site_description = read_string();
 
-    /**
-     *  TODO: send info to add landing section which is required
-     *  Don't free name until footer is added. It will be used again.
-     */
+    write_header(name, site_description);
+    write_landing(name);
 
     free(site_title);
     free(site_description);
@@ -112,16 +152,13 @@ void user_interface(t_contents *contents) {
 
             input = sanitize_input(input); //
 
-            /*
-             * TODO: store input into variables for later use
-             */
+            strcpy(contents->user_input[choice][contents->section_ids[choice][j]], input);
 
             free(input);
         }
-
-        /**
-         * TODO: send inputs and section index to corresponding function
-         */
+		
+		write_input_to_section(contents, choice);
+        write_to_HTML(section_pointers[choice]);
 
         console_text_color('b');
         printf("\n> %s added!\n\n", contents->section_titles[choice]);
@@ -144,10 +181,7 @@ void user_interface(t_contents *contents) {
         console_text_color('w');
     }
 
-    /**
-     * TODO: send info to add footer
-     * Year variable is required. We need to get it somehow to string.
-     */
+    write_footer(name);
 
     clear_terminal();
     console_text_color('b');
@@ -158,62 +192,16 @@ void user_interface(t_contents *contents) {
     free(name);
 }
 
-void create_section(t_contents *contents, int section_number) {
-    printf("\nworking with %s: \n", contents->section_titles[section_number]);
-    for (int j = 0; contents->section_ids[section_number][j] >= 0; ++j) {
-        char user_input[256];
-        // basic interface
-        printf("Enter a %s: ", contents->interface_text[contents->section_ids[section_number][j]]);
-        scanf("%s", user_input);
-
-        strcpy(section_pointers[section_number], str_replace(section_pointers[section_number],
-                                                             contents->hashes_to_change[contents->section_ids[section_number][j]],
-                                                             user_input));
-    }
-    write_to_HTML(section_pointers[section_number]);
-}
-
 int main() {
 
     t_contents contents;
 
     init_contents(&contents);
 
+    output_file = fopen("./output/index.html", "w");
+	
     user_interface(&contents);
-
-    return 0;
-
-    printf("The rest is not part of interface \n");
-
-    output_file = fopen("index.html", "w");
-
-    char user_name[256], description[256];
-
-    // basic interface, need to change
-    printf("user_name = ");
-    scanf("%s", user_name);
-
-    printf("description = ");
-    scanf("%s", description);
-
-    strcpy(header_section, str_replace(header_section, "{{user_name}}", user_name));
-    strcpy(header_section, str_replace(header_section, "{{description}}", description));
-    strcpy(footer_section, str_replace(footer_section, "{{user_name}}", user_name));
-
-    write_to_HTML(header_section);
-
-    printf("\ninput a section number or -1 if you are done: ");
-    int input = -1;
-    scanf("%d", &input);
-    while (input >= 0 && input <= 4) {
-        create_section(&contents, input);
-        // basic interface
-        printf("\ninput a section number or -1 if you are done: ");
-        scanf("%d", &input);
-    }
-
-    write_to_HTML(footer_section);
-
+	
     fclose(output_file);
 
     return 0;
