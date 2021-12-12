@@ -6,7 +6,7 @@
 
 void write_header(char *username, char *description)
 {
-	strcpy(header_section, str_replace(header_section, "{{user_name}}", username));
+    strcpy(header_section, str_replace(header_section, "{{user_name}}", username));
     strcpy(header_section, str_replace(header_section, "{{description}}", description));
 
     write_to_HTML(header_section);
@@ -21,7 +21,7 @@ void write_landing(char *username)
 
 void write_footer(char *username)
 {
-	strcpy(footer_section, str_replace(footer_section, "{{user_name}}", username));
+    strcpy(footer_section, str_replace(footer_section, "{{user_name}}", username));
 
     char *currentyear;
 
@@ -157,7 +157,7 @@ void user_interface(t_contents *contents) {
             free(input);
         }
 		
-		write_input_to_section(contents, choice);
+	write_input_to_section(contents, choice);
         write_to_HTML(section_pointers[choice]);
 
         console_text_color('b');
