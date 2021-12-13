@@ -138,17 +138,19 @@ char *sanitize_input(char *input) {
  * \note            This function doesn't have return value
  */
 void clear_terminal() {
-    system("cls");
+//    system("cls");
 }
 
 /**
- * \brief           Read and sanatize unlimited size string from user input
+ * \brief           Read and sanitize unlimited size string from user input
  * \param[out]      input: Pointer to read string
  */
-char *read_sanatize(){
+char *read_sanitized_string() {
     char *input;
+
     input = read_string();
     input = sanitize_input(input);
+
     return input;
 }
 
@@ -157,14 +159,17 @@ char *read_sanatize(){
  * \note            You should free allocated memory after calling this function
  * \param[out]      year: Pointer to string
  */
-char *current_year(){
+char *get_current_year() {
     time_t seconds = time(NULL);
-    struct tm* current_time = localtime(&seconds);
+    struct tm *current_time = localtime(&seconds);
+    char *yearString = (char *) malloc(sizeof(char) * 4);
+    int year = current_time->tm_year + 1900;
 
-    char *year= malloc (5*sizeof(char));
-    sprintf(year, "%d", current_time->tm_year+1900);
+    for (int i = 3; i >= 0; --i, year /= 10) {
+        yearString[i] = (year % 10) + '0';
+    }
 
-    return year;
+    return yearString;
 
 }
 
@@ -209,6 +214,11 @@ char *read_string() {
     return string;
 }
 
-void write_to_HTML(char *section, FILE* output_file) {
-    fprintf(output_file, "%s", section);
+/**
+ * \brief           Write string to file
+ * \param[in]       string: Pointer to string
+ * \param[in]       file: Pointer to file
+ */
+void write_to_file(char *string, FILE *file) {
+    fprintf(file, "%s", string);
 }

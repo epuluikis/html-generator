@@ -22,12 +22,12 @@ char *sanitize_input(char* input);
 
 void clear_terminal();
 
-char *read_sanatize();
+char *read_sanitized_string();
 
 char *read_string();
 
-char *current_year();
+char *get_current_year();
 
-void write_to_HTML(char *section, FILE* output_file);
+void write_to_file(char *string, FILE* file);
 
 #endif /* HELPERS_H_INCLUDED */

@@ -27,6 +27,7 @@ void init_structure(t_contents* contents)
         "{{image}}",
         "{{alt}}",
         "{{current_year}}",
+        "{{color_theme}}",
     };
 
     const char interface_text_names[FIELD_COUNT][STR_MAX_LENGTH] = {
@@ -44,6 +45,7 @@ void init_structure(t_contents* contents)
         "Image",
         "Alt",
         "Current Year",
+        "Color Theme"
     };
 
     const char section_title_names[SECTION_COUNT][STR_MAX_LENGTH] = {
@@ -59,14 +61,14 @@ void init_structure(t_contents* contents)
 
     /* -1 indicates end */
     const int section_ids[SECTION_COUNT][SECTION_MAX_SIZE] = {
-        { 0, 1, 2, -1 },                /* General Section */
+        { 0, 1, 2, 1 },             /* General Section */
         { 2, 3, 11, 12, -1 },           /* Text + Image */
         { 2, 4, -1 },                   /* Hero Section */
         { 2, 5, 6, 7, 8, 9, 10, -1 },   /* Contacts Section */
         { 11, 12, -1 },                 /* Carousel Section */
-        { 0, 1, -1 },                   /* Header */
+        { 0, 1, 14,-1 },                 /* Header */
         { 0, -1 },                      /* Landing section */
-        { 0, -1 },                      /* Footer */
+        { 0, 13, -1 },                      /* Footer */
     };
 
     /* initialize hashes_to_change and interface_text */
@@ -83,8 +85,6 @@ void init_structure(t_contents* contents)
             contents->section_ids[i][j] = section_ids[i][j];
         }
     }
-
-    // strcpy( contents->titles_tochange[0], "{{user_name}}" );
 }
 
 /**
@@ -109,13 +109,13 @@ int copy_dependencies()
  */
 int create_output_directories()
 {
-    if (!CreateDirectoryA("../output", NULL)) {
+    if (!CreateDirectoryA("output", NULL)) {
         if (GetLastError() != ERROR_ALREADY_EXISTS) {
             return 0;
         }
     }
 
-    if (!CreateDirectoryA("../output/img", NULL)) {
+    if (!CreateDirectoryA("output/img", NULL)) {
         if (GetLastError() != ERROR_ALREADY_EXISTS) {
             return 0;
         }
