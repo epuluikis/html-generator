@@ -28,4 +28,6 @@ char *read_string();
 
 char *current_year();
 
+void write_to_HTML(char *section, FILE* output_file);
+
 #endif /* HELPERS_H_INCLUDED */

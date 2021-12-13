@@ -208,3 +208,7 @@ char *read_string() {
     string[counter - 1] = '\0';
     return string;
 }
+
+void write_to_HTML(char *section, FILE* output_file) {
+    fprintf(output_file, "%s", section);
+}
