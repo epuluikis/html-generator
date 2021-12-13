@@ -52,15 +52,21 @@ void init_structure(t_contents* contents)
         "Hero Section",
         "Contacts Section",
         "Carousel Section",
+        "Header",
+        "Landing Section",
+        "Footer",
     };
 
     /* -1 indicates end */
-    const int section_ids[SECTION_COUNT][SECTION_MAX_SIZE + 1] = {
+    const int section_ids[SECTION_COUNT][SECTION_MAX_SIZE] = {
         { 0, 1, 2, -1 },                /* General Section */
-        { 2, 3, -1 },                   /* Text + Image */
+        { 2, 3, 11, 12, -1 },           /* Text + Image */
         { 2, 4, -1 },                   /* Hero Section */
         { 2, 5, 6, 7, 8, 9, 10, -1 },   /* Contacts Section */
-        { 0, 11, 12, -1 },              /* Carousel Section */
+        { 11, 12, -1 },                 /* Carousel Section */
+        { 0, 1, -1 },                   /* Header */
+        { 0, -1 },                      /* Landing section */
+        { 0, -1 },                      /* Footer */
     };
 
     /* initialize hashes_to_change and interface_text */

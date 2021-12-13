@@ -140,3 +140,7 @@ char *sanitize_input(char *input) {
 void clear_terminal() {
     system("cls");
 }
+
+void write_to_HTML(char *section, FILE* output_file) {
+    fprintf(output_file, "%s", section);
+}
