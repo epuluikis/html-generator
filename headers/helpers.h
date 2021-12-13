@@ -11,7 +11,6 @@
 #include <windows.h>
 #include <stdio.h>
 #include <time.h>
-#include <math.h>
 
 char* str_replace(char* orig, char* rep, char* with);
 
