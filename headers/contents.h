@@ -13,8 +13,8 @@
 
 #define STR_MAX_LENGTH 256
 #define FIELD_COUNT 14
-#define SECTION_COUNT 5
-#define SECTION_MAX_SIZE 7
+#define SECTION_COUNT 8
+#define SECTION_MAX_SIZE 10
 
 /**
  * \brief           Holds all data required to generate template
@@ -29,7 +29,5 @@ typedef struct contents {
 } t_contents;
 
 int init_contents(t_contents* contents);
-
-FILE *output_file;
 
 #endif /* CONTENTS_H_INCLUDED */
