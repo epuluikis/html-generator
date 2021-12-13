@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #define STR_MAX_LENGTH 256
-#define FIELD_COUNT 14
+#define FIELD_COUNT 15
 #define SECTION_COUNT 8
 #define SECTION_MAX_SIZE 10
 
