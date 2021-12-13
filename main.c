@@ -2,6 +2,8 @@
 #include "headers/contents.h"
 #include "headers/helpers.h"
 
+#define COLOR_COUNT 5
+
 /**
  * \brief           Inputs user input to selected section
  */
@@ -21,7 +23,15 @@ void write_input_to_section(t_contents *contents, int section_number)
 //This should be all in main and not a function.
 void user_interface(t_contents *contents, FILE* output_file) {
     char *name, *site_title, *site_description, *input;
-    int choice;
+    int choice, color_choice;
+
+    char colors[COLOR_COUNT][10] = {
+    "pink",
+    "orange",
+    "blue",
+    "red",
+    "pastel",
+    };
 
     clear_terminal();
     console_text_color('b');
@@ -53,6 +63,20 @@ void user_interface(t_contents *contents, FILE* output_file) {
     write_to_HTML(section_pointers[6], output_file);
 
     free(site_description);
+
+    clear_terminal();
+    printf("Please choose color theme: \n");
+    for (int i = 0; i < COLOR_COUNT; i++){
+        console_text_color('g');
+        printf("[%d]", i);
+        console_text_color('w');
+        printf(" to choose %s color \n", colors[i]);
+    };
+    printf("\n\n");
+    color_choice = get_number(0, COLOR_COUNT-1);
+    /**
+    /*         TODO: Use colors[color_choice]);
+    */
 
     while (1) {
         clear_terminal();
