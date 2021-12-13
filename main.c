@@ -10,46 +10,6 @@ void write_to_HTML(char *section) {
     fprintf(output_file, "%s", section);
 }
 
-/**
- * \brief           Read unlimited size string from user input
- * \param[out]      big: Pointer to read string
- */
-char *read_string() {
-    char *string;
-    size_t counter = 0;
-    size_t allocated = 16;
-    int c;
-
-    string = malloc(allocated);
-
-    do {
-        c = getchar();
-        if (c == EOF) {
-            break;
-        }
-        if (counter + 2 <= allocated) {
-            size_t new_size = allocated * 2;
-            char *new_buffer = realloc(string, new_size);
-            if (!new_buffer) {
-                new_size = allocated + 16;
-                new_buffer = realloc(string, new_size);
-                if (!new_buffer) {
-                    free(string);
-                    console_text_color('r');
-                    printf("\nSorry, but we are out of memory\n");
-                    console_text_color('w');
-                    exit(0);
-                }
-            }
-            allocated = new_size;
-            string = new_buffer;
-        }
-        string[counter++] = c;
-    } while (c != '\n');
-
-    string[counter - 1] = '\0';
-    return string;
-}
 
 //This should be all in main and not a function.
 void user_interface(t_contents *contents) {
@@ -64,13 +24,13 @@ void user_interface(t_contents *contents) {
     console_text_color('w');
 
     printf("Please enter your full name: ");
-    name = read_string();
+    name = read_sanatize();
 
     printf("Please enter website title: ");
-    site_title = read_string();
+    site_title = read_sanatize();
 
     printf("Please enter website description: ");
-    site_description = read_string();
+    site_description = read_sanatize();
 
     /**
      *  TODO: send info to add landing section which is required
@@ -104,15 +64,9 @@ void user_interface(t_contents *contents) {
         for (int j = 0; contents->section_ids[choice][j] != -1; ++j) {
             printf("Please enter preferred %s: ", contents->interface_text[contents->section_ids[choice][j]]);
 
-            input = read_string();
+            input = read_sanatize();
 
             /**
-             * TODO: allocate more input memory, because overflow can happen if 1 char is replaced with 4
-             */
-
-            input = sanitize_input(input); //
-
-            /*
              * TODO: store input into variables for later use
              */
 
@@ -146,7 +100,6 @@ void user_interface(t_contents *contents) {
 
     /**
      * TODO: send info to add footer
-     * Year variable is required. We need to get it somehow to string.
      */
 
     clear_terminal();

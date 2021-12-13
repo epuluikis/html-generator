@@ -106,7 +106,7 @@ int get_number(int min, int max) {
             continue;
         }
 
-        if (number < -min || number > max) {
+        if (number < min || number > max) {
             printf("Input value doesn't fit in range. ");
 
             continue;
@@ -139,4 +139,72 @@ char *sanitize_input(char *input) {
  */
 void clear_terminal() {
     system("cls");
+}
+
+/**
+ * \brief           Read and sanatize unlimited size string from user input
+ * \param[out]      input: Pointer to read string
+ */
+char *read_sanatize(){
+    char *input;
+    input = read_string();
+    input = sanitize_input(input);
+    return input;
+}
+
+/**
+ * \brief           Returns pointer to current year in string
+ * \note            You should free allocated memory after calling this function
+ * \param[out]      year: Pointer to string
+ */
+char *current_year(){
+    time_t seconds = time(NULL);
+    struct tm* current_time = localtime(&seconds);
+
+    char *year= malloc (5*sizeof(char));
+    sprintf(year, "%d", current_time->tm_year+1900);
+
+    return year;
+
+}
+
+/**
+ * \brief           Read unlimited size string from user input
+ * \param[out]      big: Pointer to read string
+ */
+char *read_string() {
+    char *string;
+    size_t counter = 0;
+    size_t allocated = 16;
+    int c;
+
+    string = malloc(allocated);
+
+    do {
+        c = getchar();
+        if (c == EOF) {
+            break;
+        }
+        if (counter + 2 <= allocated) {
+            size_t new_size = allocated * 2;
+            char *new_buffer = realloc(string, new_size);
+            if (!new_buffer) {
+                new_size = allocated + 16;
+                new_buffer = realloc(string, new_size);
+                if (!new_buffer) {
+                    free(string);
+                    console_text_color('r');
+                    printf("\nSorry, but we are out of memory\n");
+                    console_text_color('w');
+                    exit(0);
+                }
+            }
+            allocated = new_size;
+            string = new_buffer;
+        }
+        string[counter++] = c;
+    } while (c != '\n');
+
+    string[counter - 1] = '\0';
+    return string;
 }
