@@ -28,6 +28,6 @@ char *read_string();
 
 char *get_current_year();
 
-void write_to_file(char *string, FILE* file);
+void write_to_file(char **string, FILE *file);
 
 #endif /* HELPERS_H_INCLUDED */

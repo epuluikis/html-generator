@@ -163,11 +163,8 @@ char *get_current_year() {
     time_t seconds = time(NULL);
     struct tm *current_time = localtime(&seconds);
     char *yearString = (char *) malloc(sizeof(char) * 4);
-    int year = current_time->tm_year + 1900;
 
-    for (int i = 3; i >= 0; --i, year /= 10) {
-        yearString[i] = (year % 10) + '0';
-    }
+    sprintf(yearString, "%d", current_time->tm_year+1900);
 
     return yearString;
 
@@ -216,9 +213,11 @@ char *read_string() {
 
 /**
  * \brief           Write string to file
- * \param[in]       string: Pointer to string
+ * \param[in]       string: Pointer to pointer to string
  * \param[in]       file: Pointer to file
  */
-void write_to_file(char *string, FILE *file) {
-    fprintf(file, "%s", string);
+void write_to_file(char **string, FILE *file) {
+    fprintf(file, "%s", *string);
+    free(*string);
+    *string = NULL;
 }
