@@ -104,3 +104,30 @@ a {
 .contact:hover .contact__icon {
     color: white !important;
 }
+
+.blockquote {
+    border-left: 5px solid var(--primary);
+    background-color: #f6f6f6;
+    padding: 4rem;
+}
+
+.blockquote__icon {
+    color: var(--secondary);
+    font-size: 40px;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.testimonial__icon {
+    color: var(--primary);
+    font-size: 70px;
+    transform: rotate(10deg);
+}
+
+.image-banner {
+    height: 40vh;
+    object-fit: cover;
+    object-position: center;
+}
