@@ -12,16 +12,17 @@
  */
 void write_input_to_section(t_contents *contents, int section_number) {
     for (int j = 0; contents->section_ids[section_number][j] != -1; ++j) {
-        printf("%s\n", section_pointers[section_number]);
-        printf("%s\n\n", contents->user_input[section_number][contents->section_ids[section_number][j]]);
 
-        char *input = contents->user_input[section_number][contents->section_ids[section_number][j]];
-
-        strcpy(section_pointers[section_number],
-               str_replace(
-                       section_pointers[section_number],
-                       contents->hashes_to_change[contents->section_ids[section_number][j]],
-                       input));
+        if(section_pointers_input[section_number]==NULL) {
+            section_pointers_input[section_number] = strdup( str_replace(section_pointers[section_number],
+                                                        contents->hashes_to_change[contents->section_ids[section_number][j]],
+                                                        contents->user_input[section_number][contents->section_ids[section_number][j]]));
+        }
+        else {
+            section_pointers_input[section_number] = str_replace(section_pointers_input[section_number],
+                                                        contents->hashes_to_change[contents->section_ids[section_number][j]],
+                                                        contents->user_input[section_number][contents->section_ids[section_number][j]]);
+        }
     }
 }
 
@@ -64,7 +65,7 @@ char *initial_questions(t_contents *contents, FILE *output_file) {
         write_input_to_section(contents, i);
 
         if (i != 7) {
-            write_to_file(section_pointers[i], output_file);
+            write_to_file(&section_pointers_input[i], output_file);
         }
     }
 
@@ -122,7 +123,8 @@ void user_interface(t_contents *contents, FILE *output_file) {
         }
 
         write_input_to_section(contents, choice);
-        write_to_file(section_pointers[choice], output_file);
+        write_to_file(&section_pointers_input[choice], output_file);
+        printf("write to full should be null %s",section_pointers_input[choice]);
 
         console_text_color('b');
         printf("\n> %s added!\n\n", contents->section_titles[choice]);
@@ -145,7 +147,7 @@ void user_interface(t_contents *contents, FILE *output_file) {
         console_text_color('w');
     }
 
-    write_to_file(section_pointers[7], output_file);
+    write_to_file(&section_pointers_input[7], output_file);
 
     clear_terminal();
     console_text_color('b');
