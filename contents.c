@@ -10,65 +10,60 @@
  * \note            This function does not return value, it stores it to pointer instead
  * \param[in]       contents: Structure to initialize
  */
-void init_structure(t_contents* contents)
-{
+void init_structure(t_contents *contents) {
     const char title_names[FIELD_COUNT][STR_MAX_LENGTH] = {
-        "{{user_name}}",
-        "{{description}}",
-        "{{title}}",
-        "{{text}}",
-        "{{subtitle}}",
-        "{{phone_title}}",
-        "{{phone}}",
-        "{{email_title}}",
-        "{{email}}",
-        "{{address_title}}",
-        "{{address}}",
-        "{{image}}",
-        "{{alt}}",
-        "{{current_year}}",
-        "{{color_theme}}",
+            "{{user_name}}",
+            "{{description}}",
+            "{{title}}",
+            "{{text}}",
+            "{{subtitle}}",
+            "{{phone_title}}",
+            "{{phone}}",
+            "{{email_title}}",
+            "{{email}}",
+            "{{address_title}}",
+            "{{address}}",
+            "{{image}}",
+            "{{alt}}",
+            "{{current_year}}",
+            "{{color_theme}}",
     };
 
     const char interface_text_names[FIELD_COUNT][STR_MAX_LENGTH] = {
-        "User Name",
-        "Description",
-        "Title",
-        "Text",
-        "Subtitle",
-        "Phone Title",
-        "Phone Number",
-        "Email Title",
-        "Email",
-        "Address Title",
-        "Address",
-        "Image",
-        "Alt",
-        "Current Year",
-        "Color Theme"
+            "Name",
+            "Description",
+            "Title",
+            "Text",
+            "Subtitle",
+            "Phone Title",
+            "Phone Number",
+            "Email Title",
+            "Email",
+            "Address Title",
+            "Address",
+            "Image",
+            "Alt",
+            "Current Year",
+            "Color Theme"
     };
 
     const char section_title_names[SECTION_COUNT][STR_MAX_LENGTH] = {
-        "General Section",
-        "Text + Image Section",
-        "Hero Section",
-        "Contacts Section",
-        "Carousel Section",
-        "Header",
-        "Landing Section",
-        "Footer",
+            "Header",
+            "Footer",
+            "Text + Image Section",
+            "Hero Section",
+            "Contacts Section",
+            "Carousel Section",
     };
 
     /* -1 indicates end */
     const int section_ids[SECTION_COUNT][SECTION_MAX_SIZE] = {
-        { 0, 1, 2, 1 },             /* General Section */
-        { 2, 3, 11, 12, -1 },           /* Text + Image */
-        { 2, 4, -1 },                   /* Hero Section */
-        { 2, 5, 6, 7, 8, 9, 10, -1 },   /* Contacts Section */
-        { 11, 12, -1 },                 /* Carousel Section */
-        { 0, 1, 14,-1 },                 /* Header */
-        { 0, -1 },                      /* Landing section */
-        { 0, 13, -1 },                      /* Footer */
+            {0,  1,  2,  14, -1},               /* Header */
+            {0,  13, -1},                               /* Footer */
+            {2,  3,  11, 12, -1},               /* Text + Image */
+            {2,  4,  -1},                               /* Hero Section */
+            {2,  5,  6,  7,  8, 9, 10, -1},   /* Contacts Section */
+            {11, 12, -1},                 /* Carousel Section */
     };
 
     /* initialize hashes_to_change and interface_text */
@@ -91,12 +86,9 @@ void init_structure(t_contents* contents)
  * \brief           Copy HTML dependencies using Windows API
  * \param[out]      1 on success, 0 otherwise
  */
-int copy_dependencies()
-{
-    if (
-        !CopyFile("../resources/template/app.css", "../output/app.css", 0) ||
-        !CopyFile("../resources/template/img/decoration.png", "../output/img/decoration.png", 0)
-    ) {
+int copy_dependencies() {
+    if (!CopyFile("../resources/template/app.css", "../output/app.css", 0) ||
+        !CopyFile("../resources/template/img/decoration.png", "../output/img/decoration.png", 0)) {
         return 0;
     }
 
@@ -107,8 +99,7 @@ int copy_dependencies()
  * \brief           Create directories using Windows API
  * \param[out]      1 on success, 0 otherwise
  */
-int create_output_directories()
-{
+int create_output_directories() {
     if (!CreateDirectoryA("output", NULL)) {
         if (GetLastError() != ERROR_ALREADY_EXISTS) {
             return 0;
@@ -129,12 +120,10 @@ int create_output_directories()
  * \param[in]        contents: Structure to initialize
  * \param[out]       1 on success, 0 otherwise
  */
-int init_contents(t_contents* contents)
-{
+int init_contents(t_contents *contents) {
     init_structure(contents);
 
-    if (!create_output_directories() || !copy_dependencies())
-    {
+    if (!create_output_directories() || !copy_dependencies()) {
         return 0;
     }
 

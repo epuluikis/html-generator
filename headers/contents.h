@@ -13,7 +13,8 @@
 
 #define STR_MAX_LENGTH 256
 #define FIELD_COUNT 15
-#define SECTION_COUNT 8
+#define SECTION_COUNT 6
+#define IGNORE_SECTIONS 2
 #define SECTION_MAX_SIZE 10
 
 /**
@@ -28,6 +29,6 @@ typedef struct contents {
     int section_ids[SECTION_COUNT][SECTION_MAX_SIZE];               /*!< Section - hash relation */
 } t_contents;
 
-int init_contents(t_contents* contents);
+int init_contents(t_contents *contents);
 
 #endif /* CONTENTS_H_INCLUDED */

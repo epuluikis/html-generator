@@ -133,12 +133,45 @@ char *sanitize_input(char *input) {
     return input;
 }
 
+void print_generating_message() {
+    console_text_color('g');
+    printf("Generating content... ");
+    console_text_color('w');
+}
+
+void print_generated_message() {
+    console_text_color('g');
+    printf("Your new website has been generated!\n\n");
+    console_text_color('w');
+}
+
+void print_outro_message() {
+    console_text_color('b');
+    printf("Thank you for using HTML Generator v2.0.0\n\n");
+    console_text_color('w');
+    printf("Authors:\n"
+           "- Edvinas PULUIKIS    <edvinas@puluikis.lt>\n"
+           "- Jokubas BUCELIS     <bucelis.jokubas@gmail.com>\n"
+           "- Karolis JANUSONIS   <karojanus88@gmail.com>\n"
+           "- Edvin PUDOVAS       <edvinpudovas@gmail.com>\n");
+    console_text_color('w');
+}
+
+void print_introduction_message() {
+    console_text_color('b');
+    printf("================================================\n"
+           "Create beautiful personalised portfolio website.\n"
+           "================================================\n\n");
+    console_text_color('w');
+}
+
 /**
  * \brief           Clear terminal
  * \note            This function doesn't have return value
  */
 void clear_terminal() {
-//    system("cls");
+    system("cls");
+    print_introduction_message();
 }
 
 /**
@@ -164,7 +197,7 @@ char *get_current_year() {
     struct tm *current_time = localtime(&seconds);
     char *yearString = (char *) malloc(sizeof(char) * 4);
 
-    sprintf(yearString, "%d", current_time->tm_year+1900);
+    sprintf(yearString, "%d", current_time->tm_year + 1900);
 
     return yearString;
 
@@ -172,43 +205,46 @@ char *get_current_year() {
 
 /**
  * \brief           Read unlimited size string from user input
- * \param[out]      big: Pointer to read string
+ * \param[out]      Pointer to read string
  */
 char *read_string() {
-    char *string;
-    size_t counter = 0;
-    size_t allocated = 16;
-    int c;
+    char *str, ch;
+    size_t size = 16, len = 0;
 
-    string = malloc(allocated);
+    str = realloc(NULL, sizeof(*str) * size);
 
-    do {
-        c = getchar();
-        if (c == EOF) {
-            break;
-        }
-        if (counter + 2 <= allocated) {
-            size_t new_size = allocated * 2;
-            char *new_buffer = realloc(string, new_size);
-            if (!new_buffer) {
-                new_size = allocated + 16;
-                new_buffer = realloc(string, new_size);
-                if (!new_buffer) {
-                    free(string);
-                    console_text_color('r');
-                    printf("\nSorry, but we are out of memory\n");
-                    console_text_color('w');
-                    exit(0);
-                }
+    if (!str) {
+        free(str);
+        print_ofm();
+        exit(0);
+    }
+
+    while (EOF != (ch = (char) fgetc(stdin)) && ch != '\n') {
+        str[len++] = ch;
+
+        if (len == size) {
+            str = (char *) realloc(str, sizeof(*str) * (size += 16));
+
+            if (!str) {
+                free(str);
+                print_ofm();
+                exit(0);
             }
-            allocated = new_size;
-            string = new_buffer;
         }
-        string[counter++] = c;
-    } while (c != '\n');
+    }
 
-    string[counter - 1] = '\0';
-    return string;
+    str[len++] = '\0';
+
+    return (char *) realloc(str, sizeof(*str) * len);
+}
+
+/**
+ * \brief           Print Out of Memory message to stdout
+ */
+void print_ofm() {
+    console_text_color('r');
+    printf("\nSorry, but we are out of memory\n");
+    console_text_color('w');
 }
 
 /**

@@ -1,9 +1,12 @@
 #ifndef TEMPLATE_H_INCLUDED
 #define TEMPLATE_H_INCLUDED
 #endif /* TEMPLATE_H_INCLUDED */
+
+/* TODO: fix this hack */
 #ifndef SECTION_COUNT
-#define SECTION_COUNT 8
+#define SECTION_COUNT 6
 #endif
+
 #define COLOR_COUNT 5
 
 char header_section[] = "<!DOCTYPE html> <html class='h-100' lang='en'> <head> <!-- meta --> <meta charset='UTF-8'/> <meta content='IE=edge' http-equiv='X-UA-Compatible'/> <meta content='width=device-width, initial-scale=1.0' name='viewport'/> <title>{{user_name}} portfolio</title> <meta name='description' content='{{description}}'> <!-- styles --> <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet' /> <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css' rel='stylesheet' /> <link href='./app.css' rel='stylesheet' /> <!-- fonts --> <link rel='preconnect' href='https://fonts.googleapis.com' /> <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin /> <link href='https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600&display=swap' rel='stylesheet' /> </head> <body class='{{color_theme}} d-flex flex-column h-100'> <nav class='p-3 bg-dark text-white flex-shrink-0 fixed-top'> <div class='container'> <div class='d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start'> <a class='d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none' href='#'> {{user_name}} </a> <!--<ul class='nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0'>--> <!--<li><a class='nav-link px-2 text-secondary' href='#'>Home</a></li>--> <!--</ul>--> </div> </div> </nav> <main>";
