@@ -14,7 +14,7 @@ Simple but yet wonderful HTML Generator which lets to create a new portfolio in 
 ## Manual
 1. Make sure to have C compiler
 2. Open CMD or Terminal
-3. Run `gcc -o generator main.c contents.c helpers.c`
+3. Run `gcc -o generator main.c contents.c helpers.c list.c`
 4. Run `generator`
 5. Follow instructions
 6. Enjoy your new portfolio website
