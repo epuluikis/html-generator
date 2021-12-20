@@ -8,4 +8,5 @@ include_directories(.)
 add_executable(HTML_Generator
         main.c
         contents.c
-        helpers.c)
+        helpers.c
+        list.c)

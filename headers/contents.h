@@ -10,12 +10,7 @@
 #include <windows.h>
 #include <fileapi.h>
 #include <stdio.h>
-
-#define STR_MAX_LENGTH 256
-#define FIELD_COUNT 15
-#define SECTION_COUNT 6
-#define IGNORE_SECTIONS 2
-#define SECTION_MAX_SIZE 10
+#include "defines.h"
 
 /**
  * \brief           Holds all data required to generate template

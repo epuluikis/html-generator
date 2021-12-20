@@ -252,8 +252,8 @@ void print_ofm() {
  * \param[in]       string: Pointer to pointer to string
  * \param[in]       file: Pointer to file
  */
-void write_to_file(char **string, FILE *file) {
-    fprintf(file, "%s", *string);
-    free(*string);
-    *string = NULL;
+void write_to_file(char *string, FILE *file) {
+    fprintf(file, "%s", string);
+    //free(string);
+    string = NULL;
 }

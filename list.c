@@ -58,6 +58,7 @@ void add_node(data_t** root)
         temp->next = *root;
         *root = temp;
     }
+    temp->section_count = 0;
 }
 
 /*

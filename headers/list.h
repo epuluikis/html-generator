@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "defines.h"
 
 /* TODO: fix this hack */
 #ifndef SECTION_COUNT
@@ -21,7 +22,7 @@
 typedef struct {
     int section_index;                             /*!< Filename / URL */
     int input_count;                               /*!< Input count */
-    char *input;                                   /*!< Point data for sections */
+    char *input[SECTION_MAX_SIZE];                 /*!< Point data for sections */
 } section_t;
 
 /* 
@@ -31,7 +32,7 @@ typedef struct {
 typedef struct data {
     int section_count;                           /*!< Point added section count */
     char url[255];                               /*!< Filename / URL */
-    char *section_t;                             /*!< Point added sections */
+    section_t section_ptr[SECTION_MAX_COUNT];    /*!< Point added sections */
 
     struct data* next;                           /*!< Point next node */
 } data_t;

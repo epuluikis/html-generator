@@ -30,7 +30,7 @@ char *get_current_year();
 
 void print_ofm();
 
-void write_to_file(char **string, FILE *file);
+void write_to_file(char *string, FILE *file);
 
 void print_generating_message();
 

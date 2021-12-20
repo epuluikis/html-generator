@@ -7,161 +7,73 @@
 #include "headers/contents.h"
 #include "headers/helpers.h"
 #include "headers/list.h"
+#include "headers/defines.h"
 
-///**
-// * \brief           Inputs user input to selected section
-// */
-//void write_input_to_section(t_contents *contents, int section_number) {
-//    for (int j = 0; contents->section_ids[section_number][j] != -1; ++j) {
-//
-//        if (section_pointers_input[section_number] == NULL) {
-//            section_pointers_input[section_number] = strdup(str_replace(section_pointers[section_number],
-//                                                                        contents->hashes_to_change[contents->section_ids[section_number][j]],
-//                                                                        contents->user_input[section_number][contents->section_ids[section_number][j]]));
-//        } else {
-//            section_pointers_input[section_number] = str_replace(section_pointers_input[section_number],
-//                                                                 contents->hashes_to_change[contents->section_ids[section_number][j]],
-//                                                                 contents->user_input[section_number][contents->section_ids[section_number][j]]);
-//        }
-//    }
-//}
-//
-///**
-// * \brief           Initial Questions
-// * \note            Generate html wouldn't work without initial questions.
-// * \param[in]       contents: pointer to t_contents populated structure
-// * \param[in]       output_file: pointer to output file
-// * \param[out]      name: pointer to name
-// */
-//char *initial_questions(t_contents *contents, FILE *output_file) {
-//    char *site_description, *name, *color;
-//
-//    printf("Please enter your full name: ");
-//    name = read_sanitized_string();
-//
-//    printf("Please enter website description: ");
-//    site_description = read_sanitized_string();
-//
-//    printf("Please choose preferred color scheme:\n");
-//
-//    for (int i = 0; i < COLOR_COUNT; i++) {
-//        console_text_color('g');
-//        printf("[%d] ", i + 1);
-//        console_text_color('w');
-//        printf("%c%s\n", toupper(colors[i][0]), colors[i] + 1);
-//    }
-//
-//    color = colors[get_number(1, COLOR_COUNT) - 1];
-//
-//    for (int i = 5; i < 8; i++) {
-//        strcpy(contents->user_input[i][contents->section_ids[i][0]], name);
-//    }
-//
-//    strcpy(contents->user_input[5][contents->section_ids[5][1]], site_description);
-//    strcpy(contents->user_input[5][contents->section_ids[5][2]], color);
-//    strcpy(contents->user_input[7][contents->section_ids[7][1]], get_current_year());
-//
-//    for (int i = 5; i < 8; i++) {
-//        write_input_to_section(contents, i);
-//
-//        if (i != 7) {
-//            write_to_file(&section_pointers_input[i], output_file);
-//        }
-//    }
-//
-//    free(site_description);
-//
-//    return name;
-//}
-//
-///**
-// * \brief           User Interface
-// * \param[in]       contents: pointer to t_contents populated structure
-// * \param[in]       output_file: pointer to output file
-// */
-//void user_interface(t_contents *contents, FILE *output_file) {
-//    char *name, *input;
-//    int choice;
-//
-//    clear_terminal();
-//    console_text_color('b');
-//    printf("================================================\n"
-//           "Create beautiful personalised portfolio website.\n"
-//           "================================================\n\n");
-//    console_text_color('w');
-//
-//    name = initial_questions(contents, output_file);
-//
-//    while (1) {
-//        clear_terminal();
-//        printf("Choose which section to add: \n");
-//        for (int i = 1; i < SECTION_COUNT - 3; i++) {
-//            console_text_color('g');
-//            printf("[%d]", i);
-//            console_text_color('w');
-//            printf(" to add %s \n", contents->section_titles[i]);
-//        }
-//
-//        printf("\n\n");
-//
-//        choice = get_number(1, SECTION_COUNT - 4);
-//
-//        clear_terminal();
-//
-//        console_text_color('b');
-//        printf("> %s selected!\n\n", contents->section_titles[choice]);
-//        console_text_color('w');
-//
-//        for (int j = 0; contents->section_ids[choice][j] != -1; ++j) {
-//            printf("Please enter preferred %s: ", contents->interface_text[contents->section_ids[choice][j]]);
-//
-//            input = read_sanitized_string();
-//
-//            strcpy(contents->user_input[choice][contents->section_ids[choice][j]], input);
-//
-//            free(input);
-//        }
-//
-//        write_input_to_section(contents, choice);
-//        write_to_file(&section_pointers_input[choice], output_file);
-//        printf("write to full should be null %s", section_pointers_input[choice]);
-//
-//        console_text_color('b');
-//        printf("\n> %s added!\n\n", contents->section_titles[choice]);
-//        console_text_color('w');
-//
-//        printf("Choose what to do next:\n");
-//        console_text_color('g');
-//        printf("[1]");
-//        console_text_color('w');
-//        printf(" to add another section\n");
-//        console_text_color('g');
-//        printf("[2]");
-//        console_text_color('w');
-//        printf(" to finish generating website\n\n");
-//
-//        if (get_number(1, 2) == 2) {
-//            break;
-//        }
-//
-//        console_text_color('w');
-//    }
-//
-//    write_to_file(&section_pointers_input[7], output_file);
-//
-//    clear_terminal();
-//    console_text_color('b');
-//    printf("Your generated website should be in output folder.\n"
-//           "Thank you for using this tool!\n");
-//    console_text_color('w');
-//
-//    free(name);
-//}
+char* get_next_page_url(data_t *previous_page)
+{
+	if(previous_page == NULL) {
+		return "index.html";
+	}
+	
+	return previous_page->url;
+}
 
-/* TODO */
 void generate_html(t_contents *contents, data_t **page) {
-
-};
+    FILE *output_file;
+    data_t *previous_ptr = NULL;
+    data_t *ptr = NULL;
+    ptr = *page;
+    int page_count = 0;
+    
+    while(ptr != NULL) {
+		int i = 0;
+		
+		char filename[] = "output/";
+		strcat(filename, ptr->url);
+		output_file = fopen(filename, "w");
+		
+        if(output_file == NULL) {
+            printf("Failed to create page number %d, bad file name.\n", page_count + 1);
+            ptr = ptr->next;
+            ++page_count;
+            continue;
+        }
+		
+		/* Write header */
+        write_to_file(section_pointers[0], output_file);
+        
+        /* Write url section */
+        char *url_sect = strdup(section_pointers[3]);
+        strcpy(url_sect, str_replace(url_sect, "{{url}}", get_next_page_url(previous_ptr)));
+        strcpy(url_sect, str_replace(url_sect, "{{title}}", get_next_page_url(previous_ptr)));
+        write_to_file(url_sect, output_file);
+        
+        if(ptr->next == NULL) {
+        	i = 3;
+        	/* Write landing section if its the first page */
+            write_to_file(section_pointers[2], output_file);
+        }
+		
+        for(; i < ptr->section_count; ++i) {
+            char *str_new_section = (char *) malloc( strlen(section_pointers[ptr->section_ptr[i].section_index]) + 1 );
+            strcpy(str_new_section, section_pointers[ptr->section_ptr[i].section_index]);
+			
+            for(int j = 0; j < ptr->section_ptr[i].input_count; ++j) {
+                strcpy(str_new_section, str_replace(str_new_section, contents->hashes_to_change[contents->section_ids[ptr->section_ptr[i].section_index][j]], ptr->section_ptr[i].input[j]));
+            }
+            
+            write_to_file(str_new_section, output_file);
+            
+            free(str_new_section);
+        }
+        
+        previous_ptr = ptr;
+        ptr = ptr->next;
+        /* Write footer */
+        write_to_file(section_pointers[1], output_file);
+        fclose(output_file);
+    }
+}
 
 void print_option(char *string, int number) {
     console_text_color('g');
@@ -208,49 +120,91 @@ void print_section_field(t_contents *contents, int section, int field) {
            contents->interface_text[contents->section_ids[section][field]]);
 }
 
-/* TODO */
-void save_section_field(t_contents *contents, int section, int field, char *input) {
-
+void save_section_field(data_t *page, int section, int page_number, char *input) {
+    int section_number = page->section_count;
+	
+	page->section_ptr[section_number].section_index = section;
+    page->section_ptr[section_number].input[page->section_ptr[section_number].input_count] = input;
+    page->section_ptr[page->section_count].input_count ++;
 }
 
-void handle_section_fields(t_contents *contents, int section, int page) {
+void handle_section_fields(data_t *page, t_contents *contents, int section, int page_number) {
     for (int i = 0; contents->section_ids[section][i] != -1; ++i) {
-        print_section_field(contents, section, i);
-        char *input = read_sanitized_string();
-        save_section_field(contents, section, page, input);
-    }
+        char *input = NULL;
 
+        print_section_field(contents, section, i);
+        input = read_sanitized_string();
+        
+        save_section_field(page, section, page_number, input);
+    }
+    page->section_count ++;
     printf("\n");
 }
 
 void user_interface(t_contents *contents, data_t **page) {
     int page_number = 0, repeat_selection = 1, section_selection;
+    char *page_name = (char *) malloc( STR_MAX_LENGTH + 1 );
 
     clear_terminal();
 
     do {
         if (repeat_selection == 1) {
-            page_number++;
+            
+            if (page_number != 0) {
+            	clear_terminal();
+            	
+            	printf("What is your page name: ");
+            	/* TODO: validate the page_name */
+            	page_name = read_string();
+            	strcat(page_name, ".html");
+			}
 
-            /* Add new page */
-            /* TODO: Ask for page URL and store in node */
-            /* For the first page URL should be index */
             add_node(page);
 
             /* Should happen only once */
             /* Gets mandatory information for whole website */
-            if (page_number == 1) {
-                handle_section_fields(contents, 0, page_number);
+            if (page_number == 0) {    			      	
+                handle_section_fields(*page, contents, 0, page_number);
+				
+                /* For the first page URL should be index */
+				page_name = "index.html";
+				
+                /* Take info from header and write to footer */
+                (*page)->section_ptr[1].section_index = 1;
+                (*page)->section_ptr[1].input[0] = (*page)->section_ptr[0].input[0];
+                (*page)->section_ptr[1].input[1] = get_current_year();
+                (*page)->section_ptr[1].input_count = 2;
+
+                /* Take info from header and write to landing */
+                (*page)->section_ptr[2].section_index = 2;
+                (*page)->section_ptr[2].input[0] = (*page)->section_ptr[0].input[0];
+                (*page)->section_ptr[2].input_count = 1;
+				
+                /* First page has 3 sections by default - header, footer, landing */
+				(*page)->section_count = 3;
+				
+                for(int i = 0; i < IGNORE_SECTIONS - 1; ++i) {
+                    for(int j = 0; j < (*page)->section_ptr[i].input_count; ++j) {
+                        strcpy(section_pointers[i], str_replace(section_pointers[i], 
+                                                    contents->hashes_to_change[contents->section_ids[(*page)->section_ptr[i].section_index][j]], 
+                                                    (*page)->section_ptr[i].input[j]));
+                    }
+                }
+                
             }
+
+            strcpy((*page)->url, page_name);
+            
+            page_number++;
         }
 
         clear_terminal();
 
         /* Get section & store its values */
         print_sections(contents);
-        section_selection = get_number(1, SECTION_COUNT - IGNORE_SECTIONS) + IGNORE_SECTIONS;
+        section_selection = get_number(1, SECTION_COUNT - IGNORE_SECTIONS) + IGNORE_SECTIONS - 1;
         print_selected_section(contents, section_selection);
-        handle_section_fields(contents, section_selection, page_number);
+        handle_section_fields(*page, contents, section_selection, page_number);
 
         clear_terminal();
 
@@ -279,14 +233,6 @@ int main() {
     delete_list(&page);
 
     print_outro_message();
-
-    //    FILE *output_file;
-
-    //    output_file = fopen("output/index.html", "w");
-
-    //    user_interface(&contents, output_file);
-
-    //    fclose(output_file);
 
     return 0;
 }

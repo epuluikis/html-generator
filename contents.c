@@ -44,12 +44,15 @@ void init_structure(t_contents *contents) {
             "Image",
             "Alt",
             "Current Year",
-            "Color Theme"
+            "Color Theme",
+            "URL"
     };
 
     const char section_title_names[SECTION_COUNT][STR_MAX_LENGTH] = {
             "Header",
             "Footer",
+            "Landing section",
+            "URL section",
             "Text + Image Section",
             "Hero Section",
             "Contacts Section",
@@ -58,12 +61,14 @@ void init_structure(t_contents *contents) {
 
     /* -1 indicates end */
     const int section_ids[SECTION_COUNT][SECTION_MAX_SIZE] = {
-            {0,  1,  2,  14, -1},               /* Header */
-            {0,  13, -1},                               /* Footer */
-            {2,  3,  11, 12, -1},               /* Text + Image */
-            {2,  4,  -1},                               /* Hero Section */
+            {0,  1,  2,  14, -1},             /* Header */
+            {0,  13, -1},                     /* Footer */
+            {0, -1},                          /* Landing section */
+            {2,  15, -1},                     /* URL section */
+            {2,  3,  11, 12, -1},             /* Text + Image */
+            {2,  4,  -1},                     /* Hero Section */
             {2,  5,  6,  7,  8, 9, 10, -1},   /* Contacts Section */
-            {11, 12, -1},                 /* Carousel Section */
+            {11, 12, -1},                     /* Carousel Section */
     };
 
     /* initialize hashes_to_change and interface_text */
