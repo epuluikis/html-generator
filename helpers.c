@@ -39,8 +39,10 @@ char *str_replace(char *orig, char *rep, char *with) {
 
     tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
 
-    if (!result)
-        return NULL;
+    if (result == NULL) {
+        print_ofm();
+        exit(0);
+    }
 
     while (count--) {
         ins = strstr(orig, rep);
@@ -197,6 +199,11 @@ char *get_current_year() {
     struct tm *current_time = localtime(&seconds);
     char *yearString = (char *) malloc(sizeof(char) * 4);
 
+    if (yearString == NULL) {
+        print_ofm();
+        exit(0);
+    }
+
     sprintf(yearString, "%d", current_time->tm_year + 1900);
 
     return yearString;
@@ -262,8 +269,6 @@ void print_ofm() {
  */
 void write_to_file(char *string, FILE *file) {
     fprintf(file, "%s", string);
-    //free(string);
-    string = NULL;
 }
 
 /**
@@ -273,6 +278,11 @@ void write_to_file(char *string, FILE *file) {
  */
 char *concat(const char *s1, const char *s2) {
     char *result = malloc(strlen(s1) + strlen(s2) + 1);
+
+    if (result == NULL) {
+        print_ofm();
+        exit(0);
+    }
 
     strcpy(result, s1);
     strcat(result, s2);
@@ -286,6 +296,11 @@ char *concat(const char *s1, const char *s2) {
  */
 char *str_copy(const char *source) {
     char *result = malloc(strlen(source)+ 1);
+
+    if (result == NULL) {
+        print_ofm();
+        exit(0);
+    }
 
     strcpy(result, source);
 
