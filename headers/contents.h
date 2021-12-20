@@ -6,11 +6,11 @@
 #ifndef CONTENTS_H_INCLUDED
 #define CONTENTS_H_INCLUDED
 
+#include "defines.h"
 #include <string.h>
 #include <windows.h>
 #include <fileapi.h>
 #include <stdio.h>
-#include "defines.h"
 
 /**
  * \brief           Holds all data required to generate template

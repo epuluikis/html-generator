@@ -5,7 +5,6 @@
 
 #ifndef DEFINES_H_INCLUDED
 #define DEFINES_H_INCLUDED
-#endif
 
 #define STR_MAX_LENGTH 256
 #define FIELD_COUNT 16
@@ -14,3 +13,5 @@
 #define SECTION_MAX_SIZE 10
 #define SECTION_MAX_COUNT 50
 #define COLOR_COUNT 5
+
+#endif /* DEFINES_H_INCLUDED */

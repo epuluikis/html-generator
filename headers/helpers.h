@@ -12,13 +12,13 @@
 #include <stdio.h>
 #include <time.h>
 
-char* str_replace(char* orig, char* rep, char* with);
+char *str_replace(char *orig, char *rep, char *with);
 
 void console_text_color(char color);
 
 int get_number(int min, int max);
 
-char *sanitize_input(char* input);
+char *sanitize_input(char *input);
 
 void clear_terminal();
 

@@ -10,11 +10,6 @@
 #include <stdlib.h>
 #include "defines.h"
 
-/* TODO: fix this hack */
-#ifndef SECTION_COUNT
-#define SECTION_COUNT 6
-#endif
-
 /*
  * \brief           Store single section data
  *
@@ -34,18 +29,13 @@ typedef struct data {
     char url[255];                               /*!< Filename / URL */
     section_t section_ptr[SECTION_MAX_COUNT];    /*!< Point added sections */
 
-    struct data* next;                           /*!< Point next node */
+    struct data *next;                           /*!< Point next node */
 } data_t;
 
-void    create_list(data_t** root);
+void create_list(data_t **root);
 
-void    delete_list(data_t** root);
+void delete_list(data_t **root);
 
-void    add_node(data_t** root);
-
-//void    print_list(data_t* root);
-
-
-//void    remove_nodes(node_t** root, int8_t value);
+void add_node(data_t **root);
 
 #endif /* LIST_H_INCLUDED */

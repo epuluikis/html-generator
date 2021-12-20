@@ -63,7 +63,7 @@ void init_structure(t_contents *contents) {
     const int section_ids[SECTION_COUNT][SECTION_MAX_SIZE] = {
             {0,  1,  2,  14, -1},             /* Header */
             {0,  13, -1},                     /* Footer */
-            {0, -1},                          /* Landing section */
+            {0,  -1},                          /* Landing section */
             {2,  15, -1},                     /* URL section */
             {2,  3,  11, 12, -1},             /* Text + Image */
             {2,  4,  -1},                     /* Hero Section */

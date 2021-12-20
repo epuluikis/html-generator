@@ -1,6 +1,5 @@
 #ifndef TEMPLATE_H_INCLUDED
 #define TEMPLATE_H_INCLUDED
-#endif /* TEMPLATE_H_INCLUDED */
 
 #include "defines.h"
 
@@ -34,3 +33,4 @@ char colors[COLOR_COUNT][10] = {
         "pastel",
 };
 
+#endif /* TEMPLATE_H_INCLUDED */
