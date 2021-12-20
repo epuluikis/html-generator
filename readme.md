@@ -4,7 +4,8 @@ Simple but yet wonderful HTML Generator which lets to create a new portfolio in 
 [Used coding standart for C](https://github.com/MaJerle/c-code-style)
 
 ## Features
-- 7 sections (including landing and footer)
+- Multiple pages
+- 10 various sections (+ header and footer)
 - 5 different color themes
 - Beautiful terminal interface
 - Bootstrap 5 CSS Framework
