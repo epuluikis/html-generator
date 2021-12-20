@@ -4,6 +4,7 @@
  */
 
 #include "headers/contents.h"
+#include "headers/helpers.h"
 
 /**
  * \brief           Initialize contents structure
@@ -27,6 +28,9 @@ void init_structure(t_contents *contents) {
             "{{alt}}",
             "{{current_year}}",
             "{{color_theme}}",
+            "{{name}}",
+            "{{position}}",
+            "{{subtitle}}"
     };
 
     const char interface_text_names[FIELD_COUNT][STR_MAX_LENGTH] = {
@@ -41,11 +45,13 @@ void init_structure(t_contents *contents) {
             "Email",
             "Address Title",
             "Address",
-            "Image",
-            "Alt",
+            "Image Link",
+            "Image Description",
             "Current Year",
             "Color Theme",
-            "URL"
+            "Name",
+            "Work Position",
+            "Subtitle"
     };
 
     const char section_title_names[SECTION_COUNT][STR_MAX_LENGTH] = {
@@ -57,6 +63,12 @@ void init_structure(t_contents *contents) {
             "Hero Section",
             "Contacts Section",
             "Carousel Section",
+            "Testimonial Section",
+            "Quote Section",
+            "Paragraph Section",
+            "Highlighted Paragraph Section",
+            "Title & Subtitle Section",
+            "Image Banner Section"
     };
 
     /* -1 indicates end */
@@ -69,6 +81,12 @@ void init_structure(t_contents *contents) {
             {2,  4,  -1},                     /* Hero Section */
             {2,  5,  6,  7,  8, 9, 10, -1},   /* Contacts Section */
             {11, 12, -1},                     /* Carousel Section */
+            {3,  15, 16, 11, -1},             /* Testimonial Section */
+            {3,  -1},                         /* Quote Section */
+            {3,  -1},                         /* Paragraph Section */
+            {3,  -1},                         /* Highlighted Paragraph Section */
+            {3,  16, -1},                     /* Title & Subtitle Section */
+            {11, 12, -1},                     /* Image Banner Section */
     };
 
     /* initialize hashes_to_change and interface_text */
@@ -92,8 +110,8 @@ void init_structure(t_contents *contents) {
  * \param[out]      1 on success, 0 otherwise
  */
 int copy_dependencies() {
-    if (!CopyFile("../resources/template/app.css", "../output/app.css", 0) ||
-        !CopyFile("../resources/template/img/decoration.png", "../output/img/decoration.png", 0)) {
+    if (!CopyFile("resources/template/app.css", "output/app.css", 0) ||
+        !CopyFile("resources/template/img/decoration.png", "output/img/decoration.png", 0)) {
         return 0;
     }
 
@@ -123,14 +141,13 @@ int create_output_directories() {
 /**
  * \brief            Initialize contents structure & dependencies
  * \param[in]        contents: Structure to initialize
- * \param[out]       1 on success, 0 otherwise
  */
-int init_contents(t_contents *contents) {
+void init_contents(t_contents *contents) {
     init_structure(contents);
 
     if (!create_output_directories() || !copy_dependencies()) {
-        return 0;
-    }
+        print_error("Sorry, but we couldn't initialize project. Please check permissions.");
 
-    return 1;
+        exit(0);
+    }
 }

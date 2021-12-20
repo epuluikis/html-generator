@@ -9,53 +9,77 @@
 #include "headers/list.h"
 #include "headers/defines.h"
 
-char *get_next_page_url(data_t *previous_page) {
-    if (previous_page == NULL) {
-        return "index.html";
+char *get_page_url(data_t *page) {
+    return concat(page->url, ".html");
+}
+
+char *get_filename(char *url) {
+    char *result = NULL;
+
+    result = concat("output/", url);
+    result = concat(result, ".html");
+
+    return result;
+}
+
+char *get_links_content(data_t **page) {
+    data_t *pages = NULL;
+    char *header_links;
+
+    pages = *page;
+    header_links = "";
+
+    while (pages != NULL && pages->next != NULL) {
+        char *temp_link = strdup(header_link);
+
+        temp_link = str_replace(temp_link, "{{url}}", get_page_url(pages));
+
+        temp_link = str_replace(temp_link, "{{title}}", pages->url);
+
+        header_links = concat(header_links, temp_link);
+
+        pages = pages->next;
     }
 
-    return previous_page->url;
+    return str_replace(section_pointers[3], "{{links}}", header_links);
 }
 
 void generate_html(t_contents *contents, data_t **page) {
     FILE *output_file;
-    data_t *previous_ptr = NULL;
     data_t *ptr = NULL;
+    char *header_links, *filename;
+
     ptr = *page;
-    int page_count = 0;
+    header_links = get_links_content(page);
 
     while (ptr != NULL) {
         int i = 0;
 
-        char filename[] = "output/";
-        strcat(filename, ptr->url);
+        filename = get_filename(ptr->url);
+
         output_file = fopen(filename, "w");
 
         if (output_file == NULL) {
-            printf("Failed to create page number %d, bad file name.\n", page_count + 1);
-            ptr = ptr->next;
-            ++page_count;
-            continue;
+            print_error("Sorry, but we couldn't create a new file. Please check permissions.");
+
+            exit(0);
         }
 
         /* Write header */
         write_to_file(section_pointers[0], output_file);
 
         /* Write url section */
-        char *url_sect = strdup(section_pointers[3]);
-        strcpy(url_sect, str_replace(url_sect, "{{url}}", get_next_page_url(previous_ptr)));
-        strcpy(url_sect, str_replace(url_sect, "{{title}}", get_next_page_url(previous_ptr)));
-        write_to_file(url_sect, output_file);
+        write_to_file(header_links, output_file);
 
         if (ptr->next == NULL) {
             i = 3;
-            /* Write landing section if its the first page */
+
+            /* Write landing section if it's the first page */
             write_to_file(section_pointers[2], output_file);
         }
 
         for (; i < ptr->section_count; ++i) {
-            char *str_new_section = (char *) malloc(strlen(section_pointers[ptr->section_ptr[i].section_index]) + 1);
-            strcpy(str_new_section, section_pointers[ptr->section_ptr[i].section_index]);
+            char *str_new_section = strdup(section_pointers[ptr->section_ptr[i].section_index]);
 
             for (int j = 0; j < ptr->section_ptr[i].input_count; ++j) {
                 strcpy(str_new_section, str_replace(str_new_section,
@@ -68,10 +92,11 @@ void generate_html(t_contents *contents, data_t **page) {
             free(str_new_section);
         }
 
-        previous_ptr = ptr;
         ptr = ptr->next;
+
         /* Write footer */
         write_to_file(section_pointers[1], output_file);
+
         fclose(output_file);
     }
 }
@@ -121,7 +146,7 @@ void print_section_field(t_contents *contents, int section, int field) {
            contents->interface_text[contents->section_ids[section][field]]);
 }
 
-void save_section_field(data_t *page, int section, int page_number, char *input) {
+void save_section_field(data_t *page, int section, char *input) {
     int section_number = page->section_count;
 
     page->section_ptr[section_number].section_index = section;
@@ -129,14 +154,28 @@ void save_section_field(data_t *page, int section, int page_number, char *input)
     page->section_ptr[page->section_count].input_count++;
 }
 
-void handle_section_fields(data_t *page, t_contents *contents, int section, int page_number) {
+char *handle_color_selection() {
+    printf("%s\n", "Choose color theme: ");
+
+    for (int i = 0; i < COLOR_COUNT; i++) {
+        print_option(colors[i], i);
+    }
+
+    return colors[get_number(1, COLOR_COUNT) - 1];
+}
+
+void handle_section_fields(data_t *page, t_contents *contents, int section) {
     for (int i = 0; contents->section_ids[section][i] != -1; ++i) {
         char *input = NULL;
 
-        print_section_field(contents, section, i);
-        input = read_sanitized_string();
+        if (contents->section_ids[section][i] == COLOR_SELECTION_INDEX) {
+            input = handle_color_selection();
+        } else {
+            print_section_field(contents, section, i);
+            input = read_sanitized_string();
+        }
 
-        save_section_field(page, section, page_number, input);
+        save_section_field(page, section, input);
     }
     page->section_count++;
     printf("\n");
@@ -154,10 +193,10 @@ void user_interface(t_contents *contents, data_t **page) {
             if (page_number != 0) {
                 clear_terminal();
 
-                printf("What is your page name: ");
+                printf("Please enter preferred page title: ");
+
                 /* TODO: validate the page_name */
                 page_name = read_string();
-                strcat(page_name, ".html");
             }
 
             add_node(page);
@@ -165,10 +204,10 @@ void user_interface(t_contents *contents, data_t **page) {
             /* Should happen only once */
             /* Gets mandatory information for whole website */
             if (page_number == 0) {
-                handle_section_fields(*page, contents, 0, page_number);
+                handle_section_fields(*page, contents, 0);
 
                 /* For the first page URL should be index */
-                page_name = "index.html";
+                page_name = "index";
 
                 /* Take info from header and write to footer */
                 (*page)->section_ptr[1].section_index = 1;
@@ -206,7 +245,7 @@ void user_interface(t_contents *contents, data_t **page) {
         print_sections(contents);
         section_selection = get_number(1, SECTION_COUNT - IGNORE_SECTIONS) + IGNORE_SECTIONS - 1;
         print_selected_section(contents, section_selection);
-        handle_section_fields(*page, contents, section_selection, page_number);
+        handle_section_fields(*page, contents, section_selection);
 
         clear_terminal();
 
@@ -235,6 +274,8 @@ int main() {
     delete_list(&page);
 
     print_outro_message();
+
+    free(page);
 
     return 0;
 }

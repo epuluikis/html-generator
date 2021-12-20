@@ -239,12 +239,20 @@ char *read_string() {
 }
 
 /**
+ * \brief           Print Error message to stdout
+ */
+void print_error(char *string) {
+    console_text_color('r');
+    printf("\n%s\n", string);
+    console_text_color('w');
+}
+
+
+/**
  * \brief           Print Out of Memory message to stdout
  */
 void print_ofm() {
-    console_text_color('r');
-    printf("\nSorry, but we are out of memory\n");
-    console_text_color('w');
+    print_error("Sorry, but we are out of memory");
 }
 
 /**
@@ -256,4 +264,18 @@ void write_to_file(char *string, FILE *file) {
     fprintf(file, "%s", string);
     //free(string);
     string = NULL;
+}
+
+/**
+ * \brief           Concatenate two strings
+ * \param[in]       s1: First string
+ * \param[in]       s2: Second string
+ */
+char *concat(const char *s1, const char *s2) {
+    char *result = malloc(strlen(s1) + strlen(s2) + 1);
+
+    strcpy(result, s1);
+    strcat(result, s2);
+
+    return result;
 }
