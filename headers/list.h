@@ -26,7 +26,7 @@ typedef struct {
  */
 typedef struct data {
     int section_count;                           /*!< Point added section count */
-    char url[255];                               /*!< Filename / URL */
+    char *url;                                   /*!< Filename / URL */
     section_t section_ptr[SECTION_MAX_COUNT];    /*!< Point added sections */
 
     struct data *next;                           /*!< Point next node */

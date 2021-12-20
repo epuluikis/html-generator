@@ -44,4 +44,6 @@ void print_introduction_message();
 
 char *concat(const char *s1, const char *s2);
 
+char *str_copy(const char *source);
+
 #endif /* HELPERS_H_INCLUDED */

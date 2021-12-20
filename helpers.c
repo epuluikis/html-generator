@@ -279,3 +279,15 @@ char *concat(const char *s1, const char *s2) {
 
     return result;
 }
+
+/**
+ * \brief           Allocate and copy new string
+ * \param[in]       source: Source string
+ */
+char *str_copy(const char *source) {
+    char *result = malloc(strlen(source)+ 1);
+
+    strcpy(result, source);
+
+    return result;
+}

@@ -82,7 +82,7 @@ void generate_html(t_contents *contents, data_t **page) {
             char *str_new_section = strdup(section_pointers[ptr->section_ptr[i].section_index]);
 
             for (int j = 0; j < ptr->section_ptr[i].input_count; ++j) {
-                strcpy(str_new_section, str_replace(str_new_section,
+                str_new_section = str_copy(str_replace(str_new_section,
                                                     contents->hashes_to_change[contents->section_ids[ptr->section_ptr[i].section_index][j]],
                                                     ptr->section_ptr[i].input[j]));
             }
@@ -225,8 +225,7 @@ void user_interface(t_contents *contents, data_t **page) {
 
                 for (int i = 0; i < IGNORE_SECTIONS - 1; ++i) {
                     for (int j = 0; j < (*page)->section_ptr[i].input_count; ++j) {
-                        strcpy(section_pointers[i],
-                               str_replace(section_pointers[i],
+                        section_pointers[i] = str_copy(str_replace(section_pointers[i],
                                            contents->hashes_to_change[contents->section_ids[(*page)->section_ptr[i].section_index][j]],
                                            (*page)->section_ptr[i].input[j]));
                     }
@@ -234,7 +233,7 @@ void user_interface(t_contents *contents, data_t **page) {
 
             }
 
-            strcpy((*page)->url, page_name);
+            (*page)->url = str_copy(page_name);
 
             page_number++;
         }
