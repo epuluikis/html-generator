@@ -1,4 +1,6 @@
 # HTML Generator
+*Created as a university project for Vilnius University.*
+
 Simple but yet wonderful HTML Generator which lets to create a new portfolio in seconds.
 
 [Used coding standart for C](https://github.com/MaJerle/c-code-style)
