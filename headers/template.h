@@ -16,7 +16,7 @@ char paragraph_section[] = "<section> <div class=\"container py-5 my-5\"> <p>{{t
 char highlighted_paragraph_section[] = "<section> <div class=\"container py-5 my-5\"> <p class=\"text-primary fs-5 fst-italic\"> {{text}} </p> </div> </section>";
 char title_subtitle_section[] = "<section> <div class=\"container py-5 my-5\"> <h1 class=\"text-primary fw-bold\"> {{title}} </h1> <p>{{subtitle}}</p> </div> </section>";
 char image_banner_section[] = "<section class=\"my-5\"> <img class=\"w-100 image-banner\" alt=\"{{alt}}\" src=\"{{image}}\"> </section>";
-char footer_section[] = "</main> <footer class='footer mt-auto py-3 bg-dark'> <div class='container'> <span class='text-muted'>{{user_name}} © {{current_year}}</span> </div> </footer> <script crossorigin='anonymous' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' ></script> </body> </html>";
+char footer_section[] = "</main> <footer class='footer mt-auto py-3 bg-dark'> <div class='container'> <span class='text-muted'>{{user_name}} © {{current_year}}</span> </div> </footer> <script crossorigin='anonymous' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' ></script> <script src=\"./app.js\"></script> </body> </html>";
 
 char header_link[] = "<li><a class='nav-link px-2 text-secondary' href='{{url}}'>{{title}}</a></li>";
 

@@ -1,0 +1,1 @@
+document.querySelector('a[href$="' + window.location.href.split(/(\\|\/)/g).pop() + '"]').classList.add('text-primary');
