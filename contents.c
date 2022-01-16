@@ -85,7 +85,7 @@ void init_structure(t_contents *contents) {
             {3,  -1},                         /* Quote Section */
             {3,  -1},                         /* Paragraph Section */
             {3,  -1},                         /* Highlighted Paragraph Section */
-            {3,  16, -1},                     /* Title & Subtitle Section */
+            {3,  17, -1},                     /* Title & Subtitle Section */
             {11, 12, -1},                     /* Image Banner Section */
     };
 
@@ -111,6 +111,7 @@ void init_structure(t_contents *contents) {
  */
 int copy_dependencies() {
     if (!CopyFile("resources/template/app.css", "output/app.css", 0) ||
+        !CopyFile("resources/template/app.js", "output/app.js", 0) ||
         !CopyFile("resources/template/img/decoration.png", "output/img/decoration.png", 0)) {
         return 0;
     }

@@ -21,7 +21,7 @@ char *str_replace(char *orig, char *rep, char *with) {
     int len_front;
     int count;
 
-    /* sanity checks and initialization */
+    /* Sanity checks and initialization */
     if (!orig || !rep)
         return NULL;
     len_rep = strlen(rep);
@@ -31,13 +31,15 @@ char *str_replace(char *orig, char *rep, char *with) {
         with = "";
     len_with = strlen(with);
 
-    /* count the number of replacements needed */
+    /* Count the number of replacements needed */
     ins = orig;
-    for (count = 0; tmp = strstr(ins, rep); ++count) {
+    tmp = strstr(ins, rep);
+    for (count = 0; tmp; ++count) {
         ins = tmp + len_rep;
+        tmp = strstr(ins, rep);
     }
 
-    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+    tmp = result = (char *) malloc(strlen(orig) + (len_with - len_rep) * count + 1);
 
     if (result == NULL) {
         print_ofm();
@@ -64,23 +66,40 @@ char *str_replace(char *orig, char *rep, char *with) {
 void console_text_color(char color) {
     switch (color) {
         case 'r':
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_RED));
+            SetConsoleTextAttribute(
+                    GetStdHandle(STD_OUTPUT_HANDLE),
+                    (FOREGROUND_RED)
+            );
             break;
         case 'y':
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_GREEN | FOREGROUND_RED));
+            SetConsoleTextAttribute(
+                    GetStdHandle(STD_OUTPUT_HANDLE),
+                    (FOREGROUND_GREEN | FOREGROUND_RED)
+            );
             break;
         case 'g':
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_GREEN));
+            SetConsoleTextAttribute(
+                    GetStdHandle(STD_OUTPUT_HANDLE),
+                    (FOREGROUND_GREEN)
+            );
             break;
         case 'b':
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (FOREGROUND_BLUE | FOREGROUND_GREEN));
+            SetConsoleTextAttribute(
+                    GetStdHandle(STD_OUTPUT_HANDLE),
+                    (FOREGROUND_BLUE | FOREGROUND_GREEN)
+            );
             break;
         case 'f':
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (0));
+            SetConsoleTextAttribute(
+                    GetStdHandle(STD_OUTPUT_HANDLE),
+                    (0)
+            );
             break;
         default:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
-                                    (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN));
+            SetConsoleTextAttribute(
+                    GetStdHandle(STD_OUTPUT_HANDLE),
+                    (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN)
+            );
     }
 }
 
@@ -99,11 +118,7 @@ int get_number(int min, int max) {
         if (scanf("%d", &number) != 1 || getchar() != '\n') {
             printf("Input does contain not number characters. ");
 
-            char c = getchar();
-
-            while (c != '\n') {
-                c = getchar();
-            };
+            while (getchar() != '\n') {};
 
             continue;
         }
@@ -121,7 +136,7 @@ int get_number(int min, int max) {
 /**
  * \brief           Replaces "<",">" symbols in string with their html entity number
  * \param[in]       input: Original string 
- * \param[out]      input: Adjusted string
+ * \param[out]      Sanitized string
  */
 char *sanitize_input(char *input) {
     char less_sign[] = "<";
@@ -129,27 +144,37 @@ char *sanitize_input(char *input) {
     char less_sign_html[] = "&#60";
     char greater_sign_html[] = "&#62";
 
-    input = str_replace(input, less_sign, less_sign_html);
-    input = str_replace(input, greater_sign, greater_sign_html);
-
-    return input;
+    return str_replace(
+            str_replace(input, less_sign, less_sign_html),
+            greater_sign,
+            greater_sign_html
+    );
 }
 
+/**
+ * \brief           Print generating content message
+ */
 void print_generating_message() {
     console_text_color('g');
     printf("Generating content... ");
     console_text_color('w');
 }
 
+/**
+ * \brief           Print generated content message
+ */
 void print_generated_message() {
     console_text_color('g');
     printf("Your new website has been generated!\n\n");
     console_text_color('w');
 }
 
+/**
+ * \brief           Print outro message
+ */
 void print_outro_message() {
     console_text_color('b');
-    printf("Thank you for using HTML Generator v2.0.0\n\n");
+    printf("Thank you for using HTML Generator v3.0.0\n\n");
     console_text_color('w');
     printf("Authors:\n"
            "- Edvinas PULUIKIS    <edvinas@puluikis.lt>\n"
@@ -159,17 +184,19 @@ void print_outro_message() {
     console_text_color('w');
 }
 
+/**
+ * \brief           Print introduction message
+ */
 void print_introduction_message() {
     console_text_color('b');
-    printf("================================================\n"
-           "Create beautiful personalised portfolio website.\n"
-           "================================================\n\n");
+    printf("=============================================================\n"
+           "HTML Generator v3.0.0 | Create personalised portfolio website\n"
+           "=============================================================\n\n");
     console_text_color('w');
 }
 
 /**
  * \brief           Clear terminal
- * \note            This function doesn't have return value
  */
 void clear_terminal() {
     system("cls");
@@ -178,20 +205,14 @@ void clear_terminal() {
 
 /**
  * \brief           Read and sanitize unlimited size string from user input
- * \param[out]      input: Pointer to read string
+ * \param[out]      Pointer to read string
  */
 char *read_sanitized_string() {
-    char *input;
-
-    input = read_string();
-    input = sanitize_input(input);
-
-    return input;
+    return sanitize_input(read_string());
 }
 
 /**
  * \brief           Returns pointer to current year in string
- * \note            You should free allocated memory after calling this function
  * \param[out]      year: Pointer to string
  */
 char *get_current_year() {
@@ -218,9 +239,9 @@ char *read_string() {
     char *str, ch;
     size_t size = 16, len = 0;
 
-    str = realloc(NULL, sizeof(*str) * size);
+    str = (char *) malloc(sizeof(*str) * size);
 
-    if (!str) {
+    if (str == NULL) {
         free(str);
         print_ofm();
         exit(0);
@@ -232,7 +253,7 @@ char *read_string() {
         if (len == size) {
             str = (char *) realloc(str, sizeof(*str) * (size += 16));
 
-            if (!str) {
+            if (str == NULL) {
                 free(str);
                 print_ofm();
                 exit(0);
@@ -277,7 +298,7 @@ void write_to_file(char *string, FILE *file) {
  * \param[in]       s2: Second string
  */
 char *concat(const char *s1, const char *s2) {
-    char *result = malloc(strlen(s1) + strlen(s2) + 1);
+    char *result = (char *) malloc(strlen(s1) + strlen(s2) + 1);
 
     if (result == NULL) {
         print_ofm();
@@ -295,7 +316,7 @@ char *concat(const char *s1, const char *s2) {
  * \param[in]       source: Source string
  */
 char *str_copy(const char *source) {
-    char *result = malloc(strlen(source)+ 1);
+    char *result = (char *) malloc(strlen(source) + 1);
 
     if (result == NULL) {
         print_ofm();
